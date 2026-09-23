@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from django.db.models import Q
 from rest_framework import status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated

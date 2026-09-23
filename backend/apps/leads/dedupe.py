@@ -23,7 +23,7 @@ from django.db.models import Q, QuerySet
 
 from apps.core.utils import jaccard, normalize_key
 
-from .models import EmailStatus, Lead, LeadDuplicate
+from .models import Lead, LeadDuplicate
 
 CONFIDENCE = {
     "email": 100,

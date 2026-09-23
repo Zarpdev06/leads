@@ -1,7 +1,5 @@
 """SMTP delivery, failures, retries, bounces, tracking and idempotency."""
-import smtplib
 
-import pytest
 from django.core import mail
 from django.utils import timezone
 
@@ -14,7 +12,7 @@ from apps.email_engine.sender import (
     send_message,
 )
 from apps.email_engine.tasks import send_due_emails, send_email_message
-from apps.leads.models import EmailStatus, Lead, LeadStatus
+from apps.leads.models import EmailStatus, LeadStatus
 from apps.settings.services import set_setting
 from apps.suppression.models import Suppression
 

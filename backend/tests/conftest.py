@@ -1,7 +1,6 @@
 """Shared fixtures for the test suite."""
 from __future__ import annotations
 
-import os
 
 import pytest
 from rest_framework.test import APIClient

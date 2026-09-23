@@ -14,7 +14,7 @@ to match it.
 |---|---|
 | **Real functionality, no mock data** | Every screen reads/writes the Postgres database through DRF. No fixture-backed "demo mode". |
 | **Never exceed SMTP capacity** | A single, concurrency-safe, row-locked `DailyEmailUsage` counter is the *only* gate for marketing sends. |
-| **Never email blindly** | Eligibility is evaluated by one function (`leads.eligibility.evaluate_lead_eligibility`) used by campaigns, follow-ups and the manual "send now" path. |
+| **Never email blindly** | Eligibility has two implementations that must agree: the per-lead `evaluate_lead_eligibility()` (used by follow-ups and "send now") and the DB-level `eligible_queryset()` / `apply_campaign_filters()` (used to select audiences server-side). Shared decision helpers such as `state_target_values()` keep the two in step — a campaign whose audience filter and eligibility check disagree will select leads and then silently send nothing. |
 | **Provider agnostic** | AI is behind an `AIProvider` interface; email is behind SMTP config from env; the fallback AI provider is deterministic and testable with zero API keys. |
 | **Idempotent background work** | Celery tasks are safe to retry: unique constraints on (`campaign_lead`, `step_number`) for messages, `select_for_update()` on the daily counter, `ImportJob` status guards. |
 | **Streaming, never `read_excel()` on huge files** | CSV is streamed with `pandas.read_csv(..., chunksize=…)`; XLSX is streamed with `openpyxl` read-only + `iter_rows(values_only=True)` in batches. Memory is O(batch), not O(file). |
@@ -428,4 +428,4 @@ Services (`docker-compose.yml`):
 | Analytics | `apps/analytics/*` | Read-side aggregations + nightly `DailyMetric` rollups |
 | Settings | `apps/settings/*` | Typed key/value with schema, masking and change log |
 | Frontend | `frontend/src/*` | 21 screens, server-side pagination everywhere, dark mode |
-| Tests | `backend/tests/*` | 157 tests, no external services required |
+| Tests | `backend/tests/*` | 163 tests, no external services required |

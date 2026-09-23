@@ -8,7 +8,7 @@ overshoot the limit.
 import threading
 
 import pytest
-from django.db import connection, connections
+from django.db import connections
 
 from apps.email_engine.models import DailyEmailUsage
 from apps.email_engine.quota import DailyEmailQuota

@@ -123,7 +123,7 @@ def _campaign_mismatches(lead: Lead, campaign) -> list[str]:
     ):
         problems.append("Sub-industry not targeted")
     states = campaign.target_states or []
-    if states and lead.state not in states:
+    if states and not state_matches(lead.state, states):
         problems.append("State not targeted")
     cities = campaign.target_cities or []
     if cities and lead.city not in cities:
@@ -196,8 +196,7 @@ def apply_campaign_filters(qs: QuerySet[Lead], campaign) -> QuerySet[Lead]:
             sub_industry_id__in=list(campaign.target_sub_industries.values_list("id", flat=True))
         )
     if campaign.target_states:
-        states = list(campaign.target_states)
-        qs = qs.filter(Q(state__in=states) | Q(state__in=_abbreviate(states)))
+        qs = qs.filter(state__in=sorted(state_target_values(campaign.target_states)))
     if campaign.target_cities:
         qs = qs.filter(city__in=list(campaign.target_cities))
     if campaign.sources.exists():
@@ -219,15 +218,44 @@ def apply_campaign_filters(qs: QuerySet[Lead], campaign) -> QuerySet[Lead]:
     return qs
 
 
-def _abbreviate(values: Iterable[str]) -> list[str]:
-    from apps.core.utils import US_STATE_NAMES
+def state_target_values(targets: Iterable[str]) -> set[str]:
+    """Every literal a lead's ``state`` may hold to satisfy ``targets``.
 
-    out = []
-    for value in values:
-        key = (value or "").strip().lower()
-        if key in US_STATE_NAMES:
-            out.append(US_STATE_NAMES[key])
-    return out
+    Leads store normalised USPS codes ("TX") while a user targets campaigns by
+    whatever they type ("Texas", "texas", "TX"). This is the single source of
+    truth used by BOTH the SQL filter (`apply_campaign_filters`) and the
+    per-lead check (`_campaign_mismatches`).
+
+    Keeping it in one place matters: when the two implementations disagreed,
+    a campaign targeting "Texas" selected a full audience at dispatch time and
+    then rejected every single lead at send time with "State not targeted" —
+    the campaign reported RUNNING but silently delivered nothing.
+    """
+    from apps.core.utils import US_STATE_NAMES, normalize_state
+
+    code_to_names: dict[str, list[str]] = {}
+    for name, code in US_STATE_NAMES.items():
+        code_to_names.setdefault(code, []).append(name.title())
+
+    values: set[str] = set()
+    for raw in targets or []:
+        text = str(raw or "").strip()
+        if not text:
+            continue
+        values.add(text)
+        code = normalize_state(text)
+        if code:
+            values.add(code)
+            values.update(code_to_names.get(code, ()))
+    return values
+
+
+def state_matches(lead_state: str | None, targets: Iterable[str]) -> bool:
+    """Case-insensitive counterpart of `state_target_values` for single leads."""
+    if not targets:
+        return True
+    wanted = {value.lower() for value in state_target_values(targets)}
+    return str(lead_state or "").strip().lower() in wanted
 
 
 def summarize(leads: Iterable[Lead], campaign=None) -> dict:

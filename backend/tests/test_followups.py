@@ -6,7 +6,7 @@ from apps.campaigns.models import Campaign, CampaignLead
 from apps.email_engine.models import EmailMessage, FollowUpSequence, FollowUpStep
 from apps.email_engine.sender import compose_message, send_message
 from apps.email_engine.services import process_follow_ups, schedule_next_follow_up
-from apps.leads.models import CRMStage, Lead
+from apps.leads.models import CRMStage
 
 
 @pytest.fixture

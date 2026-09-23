@@ -11,7 +11,6 @@ fails, so campaigns keep running instead of stalling.
 from __future__ import annotations
 
 import html
-import random
 
 from .base import AIEmailContext, AIEmailResult, AIProvider, AIServiceResult
 

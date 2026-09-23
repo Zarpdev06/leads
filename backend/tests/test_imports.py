@@ -1,10 +1,7 @@
 """CSV/XLSX import, normalization, invalid emails, duplicates, missing emails."""
-import pytest
 
 from apps.imports.pipeline import normalize_row, preview_stats
-from apps.imports.tasks import run_import_job
 from apps.leads.models import EmailStatus, EnrichmentStatus, Lead
-from apps.leads.scoring import apply_score
 from tests.utils import build_import_file, run_import
 
 

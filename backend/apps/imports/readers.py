@@ -12,9 +12,7 @@ one batch (+ the row buffers) in RAM.
 from __future__ import annotations
 
 import csv
-import io
 import os
-import re
 from dataclasses import dataclass
 from typing import Any, Iterator
 

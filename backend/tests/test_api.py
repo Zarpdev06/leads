@@ -1,9 +1,8 @@
 """Authentication, permissions and the main REST endpoints."""
-import pytest
 from rest_framework.test import APIClient
 
 from apps.accounts.models import User
-from apps.imports.models import ImportFile, LeadSource
+from apps.imports.models import ImportFile
 from apps.leads.models import Lead
 
 

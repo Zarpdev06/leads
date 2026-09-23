@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Count
 
-from apps.core.fields import EncryptedTextField
 from apps.core.models import TimeStampedModel
 from apps.core.normalizers import normalize_key
 

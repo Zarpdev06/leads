@@ -6,7 +6,7 @@ import re
 
 import httpx
 
-from .base import AIEmailContext, AIEmailResult, AIProvider, AIProviderError, AIServiceResult
+from .base import AIEmailContext, AIEmailResult, AIProvider, AIProviderError
 from .system_prompt import SYSTEM_PROMPT, build_user_prompt
 
 DEFAULT_BASE_URL = "http://localhost:11434"

@@ -5,7 +5,7 @@ from rest_framework import serializers
 from apps.companies.models import Industry
 from apps.companies.serializers import IndustrySerializer
 
-from .models import EmailStatus, Lead, LeadDuplicate, LeadQuality, LeadStatus
+from .models import Lead, LeadDuplicate, LeadStatus
 
 
 class LeadListSerializer(serializers.ModelSerializer):

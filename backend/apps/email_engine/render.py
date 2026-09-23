@@ -9,10 +9,8 @@ from __future__ import annotations
 
 import html
 import re
-from typing import Iterable
 
 from django.conf import settings
-from django.utils.safestring import mark_safe
 
 VARIABLE_RE = re.compile(r"\{\{\s*([a-z0-9_\.]+)\s*\}\}", re.I)
 LINK_RE = re.compile(r'href=["\']([^"\']+)["\']', re.I)

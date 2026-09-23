@@ -43,7 +43,7 @@ def build_user_prompt(context) -> str:
             if value:
                 lines.append(f"    - {key}: {value}")
     lines.append("")
-    lines.append(f"TEMPLATE TO PERSONALIZE:")
+    lines.append("TEMPLATE TO PERSONALIZE:")
     lines.append(f"- subject: {context.template.get('subject', '')}")
     lines.append(f"- body: {context.template.get('body_html', '')}")
     lines.append("")

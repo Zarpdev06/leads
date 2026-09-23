@@ -373,7 +373,7 @@ def send_message(message: EmailMessage, *, actor=None, force: bool = False) -> d
 
 def _handle_bounce(message: EmailMessage, *, reason: str) -> None:
     """Hard bounce: suppress the address, stop follow-ups, update the lead."""
-    from apps.leads.models import EmailStatus, Lead
+    from apps.leads.models import Lead
     from apps.suppression.services import add_suppression
 
     add_suppression(

@@ -6,7 +6,6 @@ import re
 from urllib.parse import urljoin
 
 from celery import shared_task
-from django.conf import settings
 from django.utils import timezone
 
 from apps.core.models import log_audit

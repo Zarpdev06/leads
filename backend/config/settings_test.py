@@ -16,7 +16,7 @@ from __future__ import annotations
 import tempfile
 
 from .settings import *  # noqa: F401,F403
-from .settings import BASE_DIR, INSTALLED_APPS
+from .settings import BASE_DIR
 
 DEBUG = False
 SECRET_KEY = "test-only-secret-key-not-used-in-production"

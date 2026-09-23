@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from django.conf import settings
 from django.db import models
-from django.utils import timezone
 
 from apps.companies.models import Industry
 from apps.core.models import TimeStampedModel

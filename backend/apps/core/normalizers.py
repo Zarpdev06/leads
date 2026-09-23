@@ -12,7 +12,6 @@ import re
 from dataclasses import dataclass
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
-from django.utils.functional import cached_property
 
 from .utils import (
     clean_text,

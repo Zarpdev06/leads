@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from django.db.models import Count, Sum
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
@@ -16,7 +15,6 @@ from apps.settings.services import effective_daily_limit
 
 from .models import Campaign, CampaignLead, Service, ServiceIndustryMapping
 from .serializers import (
-    AudiencePreviewSerializer,
     CampaignDetailSerializer,
     CampaignLeadSerializer,
     CampaignListSerializer,

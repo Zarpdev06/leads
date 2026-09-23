@@ -16,9 +16,10 @@ venv/
 /backend/db.sqlite3
 /backend/db_test.sqlite3
 /db.sqlite3-journal
-/media/
-/staticfiles/
-/static/
+# Unanchored on purpose: uploads and collected assets land under backend/ too.
+media/
+staticfiles/
+static/
 /backend/logs/*.log
 /backend/staticfiles_test/
 

@@ -5,7 +5,7 @@ from apps.campaigns.models import Campaign, CampaignLead
 from apps.email_engine.models import EmailMessage
 from apps.email_engine.sender import compose_message, send_message
 from apps.leads.eligibility import evaluate_lead_eligibility
-from apps.leads.models import EmailStatus, Lead
+from apps.leads.models import EmailStatus
 from apps.suppression.models import Suppression
 from apps.suppression.services import add_suppression, is_suppressed, remove_suppression
 

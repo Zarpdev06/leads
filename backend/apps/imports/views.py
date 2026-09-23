@@ -12,9 +12,8 @@ Import API.
 from __future__ import annotations
 
 from django.conf import settings
-from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.decorators import action, api_view, parser_classes, permission_classes
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -22,10 +21,10 @@ from rest_framework.response import Response
 from apps.core.models import log_audit
 from apps.core.permissions import CanModify
 
-from .mapping import auto_map, suggest_mapping
-from .models import ImportFile, ImportJob, ImportRowError, LeadSource
+from .mapping import suggest_mapping
+from .models import ImportFile, ImportJob, LeadSource
 from .pipeline import preview_stats
-from .readers import ImportFileError, estimate_row_count, inspect_file, validate_upload
+from .readers import ImportFileError, inspect_file, validate_upload
 from .serializers import (
     ImportFileSerializer,
     ImportFileUploadSerializer,

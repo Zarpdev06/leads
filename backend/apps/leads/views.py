@@ -19,7 +19,7 @@ from apps.core.permissions import CanModify
 
 from .filters import LeadFilter
 from .merge import merge_leads, resolve_duplicate
-from .models import CRMStage, EmailStatus, Lead, LeadDuplicate, LeadStatus
+from .models import EmailStatus, Lead, LeadDuplicate, LeadStatus
 from .scoring import apply_score
 from .serializers import (
     LeadBulkCampaignSerializer,

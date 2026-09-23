@@ -87,7 +87,7 @@ class CampaignWriteSerializer(serializers.ModelSerializer):
         ]
 
     def validate_daily_limit(self, value: int) -> int:
-        from apps.settings.services import smtp_daily_limit, validate_daily_marketing_limit
+        from apps.settings.services import validate_daily_marketing_limit
 
         safe, _note = validate_daily_marketing_limit(value)
         return safe

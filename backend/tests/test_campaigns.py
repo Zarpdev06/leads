@@ -8,7 +8,6 @@ from apps.email_engine.services import (
     build_schedule,
     dispatch_campaign,
     materialize_campaign_leads,
-    process_follow_ups,
 )
 from apps.leads.eligibility import eligible_queryset, evaluate_lead_eligibility
 from apps.leads.models import Lead
@@ -50,6 +49,44 @@ def test_audience_filters_by_state_and_score(campaign, make_lead):
     assert eligible_queryset(campaign).count() == 0
 
 
+@pytest.mark.parametrize("target", ["Texas", "texas", "TX", "tx", " texas "])
+def test_state_targeting_matches_in_sql_filter_and_per_lead_check(campaign, make_lead,
+                                                                 target):
+    """Regression: leads store USPS codes ("TX"), users target by any spelling.
+
+    The SQL audience filter and the per-lead eligibility check are two
+    implementations of the same rule. When only the SQL side accepted full
+    state names, a campaign targeting "Texas" selected a full audience at
+    dispatch time and then rejected every lead at send time with
+    "State not targeted" — it reported RUNNING while delivering nothing.
+    Both layers must agree, for every spelling a user might type.
+    """
+    good = make_lead(email="a@x.com", state="TX")
+    make_lead(email="b@x.com", state="CA")
+    campaign.target_states = [target]
+    campaign.save(update_fields=["target_states"])
+
+    selected = list(eligible_queryset(campaign).values_list("id", flat=True))
+    assert selected == [good.pk], f"SQL filter disagreed for {target!r}"
+
+    per_lead = [lead.pk for lead in Lead.objects.all()
+                if evaluate_lead_eligibility(lead, campaign).eligible]
+    assert per_lead == [good.pk], f"per-lead check disagreed for {target!r}"
+
+    # ...and the wrong state is excluded by both layers, whatever the casing.
+    other = Lead.objects.exclude(pk=good.pk).get()
+    assert not evaluate_lead_eligibility(other, campaign).eligible
+
+
+def test_state_targeting_also_matches_unnormalised_lead_state(campaign, make_lead):
+    """A lead whose state was never normalised still matches a code target."""
+    lead = make_lead(email="a@x.com", state="Texas")
+    campaign.target_states = ["TX"]
+    campaign.save(update_fields=["target_states"])
+    assert list(eligible_queryset(campaign).values_list("id", flat=True)) == [lead.pk]
+    assert evaluate_lead_eligibility(lead, campaign).eligible
+
+
 def test_audience_excludes_missing_and_invalid_email(campaign, make_lead):
     make_lead(email="valid@x.com")
     make_lead(email="")
@@ -58,7 +95,7 @@ def test_audience_excludes_missing_and_invalid_email(campaign, make_lead):
 
 
 def test_audience_excludes_suppressed(campaign, make_lead):
-    lead = make_lead(email="blocked@x.com")
+    make_lead(email="blocked@x.com")
     Suppression.objects.create(email_normalized="blocked@x.com",
                                reason=Suppression.Reason.MANUAL_BLOCK)
     assert eligible_queryset(campaign).count() == 0

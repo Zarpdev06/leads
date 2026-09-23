@@ -1,5 +1,4 @@
 """Lead scoring engine and quality bands."""
-import pytest
 
 from apps.leads.scoring import (
     DEFAULT_RULES,

@@ -297,7 +297,10 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = env.str("MEDIA_ROOT", default=str(BASE_DIR / "media"))
 STATIC_URL = "/static/"
 STATIC_ROOT = env.str("STATIC_ROOT", default=str(BASE_DIR / "staticfiles"))
-STATICFILES_DIRS = [BASE_DIR / "static"]
+# Only include the project-level "static/" directory when it actually exists,
+# otherwise `collectstatic` (and every `manage.py` call) emits W004 on a fresh
+# checkout where the directory is empty and therefore not tracked by git.
+STATICFILES_DIRS = [path for path in (BASE_DIR / "static",) if path.is_dir()]
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",

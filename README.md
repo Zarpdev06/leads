@@ -297,7 +297,7 @@ dataset in the browser.
 
 ```bash
 cd backend
-pytest                     # 156 tests
+pytest                     # 163 tests
 pytest tests/test_daily_limit.py -v     # the quota guarantee, incl. concurrency
 ```
 
@@ -331,7 +331,7 @@ backend/
     analytics/     aggregated metrics + read-side services
     suppression/   global suppression list
     settings/      typed configuration keyed by name with change log
-  tests/           156 tests
+  tests/           163 tests
 frontend/
   src/lib          API client (JWT + refresh), formatters, status colours
   src/components   UI primitives, layout, page header
@@ -361,7 +361,7 @@ nginx/, worker/, scripts/, docs/, docker-compose.yml
 | 14 | Settings, RBAC, audit log, admin dashboard | ✅ |
 | 15 | React UI: all screens, server-side pagination, dark mode, responsive | ✅ |
 | 16 | Background workers, management commands, seed/demo data, import CLI | ✅ |
-| 17 | Tests (157), documentation, end-to-end verification | ✅ |
+| 17 | Tests (163), documentation, end-to-end verification | ✅ |
 
 Each phase ships working code, migrations and tests — no placeholder TODOs in
 core functionality.

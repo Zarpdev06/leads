@@ -16,12 +16,11 @@ import random
 from datetime import date, datetime, time, timedelta
 
 from django.conf import settings
-from django.db import transaction
-from django.db.models import Q
+from django.db.models import QuerySet
 from django.utils import timezone
 
 from apps.campaigns.models import Campaign, CampaignLead
-from apps.leads.eligibility import apply_campaign_filters, eligible_queryset
+from apps.leads.eligibility import eligible_queryset
 from apps.leads.models import CRMStage, EmailStatus, Lead, LeadStatus
 from apps.settings.services import (
     effective_daily_limit,
@@ -38,7 +37,7 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Audience selection
 # ---------------------------------------------------------------------------
-def select_audience(campaign: Campaign, *, base=None) -> "QuerySet[Lead]":
+def select_audience(campaign: Campaign, *, base=None) -> QuerySet[Lead]:
     """Leads matching the campaign criteria and eligible for outreach."""
     if campaign.lead_ids:
         base = Lead.objects.filter(id__in=campaign.lead_ids)
@@ -383,7 +382,6 @@ def _snap_to_window(moment: datetime, campaign: Campaign) -> datetime:
 
 def process_follow_ups(campaign: Campaign | None = None, *, limit: int = 500) -> dict:
     """Create follow-up messages that are due. Safe to run repeatedly."""
-    from .models import EmailMessage
 
     queryset = CampaignLead.objects.filter(
         status__in=[

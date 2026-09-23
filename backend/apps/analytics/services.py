@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-from django.db import models
 from django.db.models import Count, Q, Sum
 from django.db.models.functions import TruncDate
 from django.utils import timezone

@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from celery import shared_task
 from django.db.models import Count, Q
-from django.db.models.functions import TruncDate
 from django.utils import timezone
 
 from .models import CampaignDailyStat, DailyMetric, ImportDailyStat

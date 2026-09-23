@@ -1,11 +1,8 @@
 """AI personalization, provider abstraction, service matching and safety."""
-import json
 
-import pytest
 
 from apps.ai_engine.generator import build_context, generate_email_for_lead
 from apps.ai_engine.models import AIRecommendation
-from apps.ai_engine.providers.base import AIEmailContext
 from apps.ai_engine.providers.registry import get_provider
 from apps.ai_engine.providers.rules import RuleBasedProvider
 from apps.ai_engine.safety import AISafetyValidator

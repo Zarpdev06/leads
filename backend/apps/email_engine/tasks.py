@@ -19,7 +19,7 @@ from django.utils import timezone
 from apps.core.models import log_audit
 from apps.settings.services import max_attempts, min_seconds_between_sends
 
-from .models import DailyEmailUsage, EmailEvent, EmailMessage
+from .models import EmailEvent, EmailMessage
 from .quota import DailyEmailQuota
 
 logger = logging.getLogger(__name__)

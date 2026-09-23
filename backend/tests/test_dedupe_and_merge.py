@@ -1,9 +1,8 @@
 """Duplicate detection, confidence scoring and merging."""
-import pytest
 
 from apps.leads.dedupe import compare, detect_duplicates, find_duplicates_for_lead
 from apps.leads.merge import merge_leads, resolve_duplicate
-from apps.leads.models import Lead, LeadDuplicate
+from apps.leads.models import LeadDuplicate
 
 
 def test_same_email_is_100_percent(make_lead):
