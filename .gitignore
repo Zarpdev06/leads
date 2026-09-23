@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.env
+.env.local
+
+# Django
+*.log
+/db.sqlite3
+/backend/db.sqlite3
+/backend/db_test.sqlite3
+/db.sqlite3-journal
+/media/
+/staticfiles/
+/static/
+/backend/logs/*.log
+/backend/staticfiles_test/
+
+# Node
+node_modules/
+/frontend/dist/
+/frontend/.vite/
+npm-debug.log*
+yarn-error.log*
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+/test_db.sqlite3
+/data/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
