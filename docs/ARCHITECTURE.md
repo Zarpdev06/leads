@@ -428,4 +428,4 @@ Services (`docker-compose.yml`):
 | Analytics | `apps/analytics/*` | Read-side aggregations + nightly `DailyMetric` rollups |
 | Settings | `apps/settings/*` | Typed key/value with schema, masking and change log |
 | Frontend | `frontend/src/*` | 21 screens, server-side pagination everywhere, dark mode |
-| Tests | `backend/tests/*` | 156 tests, no external services required |
+| Tests | `backend/tests/*` | 157 tests, no external services required |

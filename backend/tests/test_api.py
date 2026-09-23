@@ -171,6 +171,47 @@ def test_import_upload_and_process_api(db, api_client, csv_file, sample_rows):
     assert ImportFile.objects.filter(pk=import_file_id, status="COMPLETED").exists()
 
 
+def test_import_jobs_list_route_is_not_shadowed_by_import_files(db, api_client,
+                                                                csv_file, sample_rows):
+    """Regression: "/api/imports/jobs/" is a nested router prefix.
+
+    DRF matches routes in registration order, so if "imports" is registered
+    before "imports/jobs" the detail route r"imports/(?P<pk>[^/.]+)/$" catches
+    the literal "jobs" and the list endpoint 404s (the UI's job-progress panel
+    depends on it). Both the list and the filtered list must resolve.
+    """
+    from django.core.files.uploadedfile import SimpleUploadedFile
+
+    path = csv_file(sample_rows, "jobs_route.csv")
+    with open(path, "rb") as handle:
+        upload = SimpleUploadedFile("jobs_route.csv", handle.read(),
+                                    content_type="text/csv")
+    created = api_client.post("/api/imports/upload/",
+                              {"file": upload, "source_name": "Jobs route source"},
+                              format="multipart")
+    assert created.status_code == 201, created.data
+    import_file_id = created.data["id"]
+
+    processed = api_client.post(f"/api/imports/{import_file_id}/process/", {},
+                                format="json")
+    assert processed.status_code == 202
+    job_id = processed.data["id"]
+
+    listing = api_client.get("/api/imports/jobs/")
+    assert listing.status_code == 200, listing.data
+    assert any(row["id"] == job_id for row in listing.data["results"])
+
+    filtered = api_client.get("/api/imports/jobs/", {"import_file": import_file_id,
+                                                     "page_size": 5})
+    assert filtered.status_code == 200, filtered.data
+    assert [row["id"] for row in filtered.data["results"]] == [job_id]
+
+    # The parent resource must still resolve by primary key.
+    detail = api_client.get(f"/api/imports/{import_file_id}/")
+    assert detail.status_code == 200
+    assert detail.data["id"] == import_file_id
+
+
 def test_import_rejects_unsupported_file(db, api_client, tmp_path):
     from django.core.files.uploadedfile import SimpleUploadedFile
 

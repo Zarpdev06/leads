@@ -10,8 +10,11 @@ from .views import (
 )
 
 router = DefaultRouter()
-router.register(r"imports", ImportFileViewSet, basename="import-file")
+# NOTE: "imports/jobs" must be registered *before* "imports". DRF routes are
+# matched in registration order, and the detail route for "imports" is
+# r"imports/(?P<pk>[^/.]+)/$" which would otherwise swallow "/imports/jobs/".
 router.register(r"imports/jobs", ImportJobViewSet, basename="import-job")
+router.register(r"imports", ImportFileViewSet, basename="import-file")
 router.register(r"sources", LeadSourceViewSet, basename="source")
 
 urlpatterns = [

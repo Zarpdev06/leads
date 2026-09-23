@@ -20,6 +20,7 @@ venv/
 /staticfiles/
 /static/
 /backend/logs/*.log
+/backend/staticfiles_test/
 
 # Node
 node_modules/

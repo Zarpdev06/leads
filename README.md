@@ -345,20 +345,23 @@ nginx/, worker/, scripts/, docs/, docker-compose.yml
 
 | Phase | Scope | Status |
 |---|---|---|
-| 1 | Architecture, Docker/Nginx topology, Django project, PostgreSQL, Redis, Celery, React shell, auth | ✅ |
-| 2 | Database schema and migrations for all 13 apps | ✅ |
-| 3 | Data import: chunked CSV/XLSX readers, column-mapping engine, preview, statistics, background jobs | ✅ |
-| 4 | Data normalization, validation, dedupe detection and merge tooling | ✅ |
-| 5 | Lead model (all statuses, enrichment), scoring, industry classification, missing-email workflow | ✅ |
-| 6 | Campaigns, service catalogue, service↔industry rules, audience filtering | ✅ |
-| 7 | Email engine: SMTP sender, daily quota, tracking, unsubscribe, suppression, retries | ✅ |
-| 8 | AI personalization behind a provider interface + safety validation + service matching | ✅ |
-| 9 | Templates, scheduling, follow-up sequences and stop conditions | ✅ |
-| 10 | CRM pipeline, activities, notes, timelines | ✅ |
-| 11 | Analytics and dashboards | ✅ |
-| 12 | Settings, RBAC, audit log, admin dashboard | ✅ |
-| 13 | React UI: all screens, dark mode, responsive | ✅ |
-| 14 | Tests, management commands, documentation | ✅ |
+| 1 | Architecture document, Docker/Nginx topology, repo layout | ✅ |
+| 2 | Django project, settings, Celery app + beat schedule, health checks | ✅ |
+| 3 | Database schema and migrations for all 13 apps | ✅ |
+| 4 | Data import: chunked CSV/XLSX readers, column-mapping engine, preview, statistics | ✅ |
+| 5 | Data normalization, validation and per-row error reporting | ✅ |
+| 6 | Dedupe detection (confidence ladder) and merge tooling with provenance | ✅ |
+| 7 | Lead model (all statuses, enrichment), scoring, industry classification, missing-email workflow | ✅ |
+| 8 | Campaigns, service catalogue, service↔industry rules, audience filtering | ✅ |
+| 9 | Email engine: SMTP sender, daily quota, tracking, unsubscribe, suppression, retries | ✅ |
+| 10 | AI personalization behind a provider interface + safety validation + service matching | ✅ |
+| 11 | Templates, scheduling, follow-up sequences and stop conditions | ✅ |
+| 12 | CRM pipeline, activities, notes, timelines | ✅ |
+| 13 | Analytics and dashboards | ✅ |
+| 14 | Settings, RBAC, audit log, admin dashboard | ✅ |
+| 15 | React UI: all screens, server-side pagination, dark mode, responsive | ✅ |
+| 16 | Background workers, management commands, seed/demo data, import CLI | ✅ |
+| 17 | Tests (157), documentation, end-to-end verification | ✅ |
 
 Each phase ships working code, migrations and tests — no placeholder TODOs in
 core functionality.
